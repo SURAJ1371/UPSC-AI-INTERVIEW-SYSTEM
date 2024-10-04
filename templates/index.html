@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <title>UPSC AI Interview</title>
+    <style>
+        body {
+            background-color: #f4f7fa;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+        }
+        .container {
+            margin-top: 50px;
+            border-radius: 20px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+            background-color: white;
+            position: relative;
+            text-align: center;
+        }
+        h1 {
+            color: #007bff;
+            margin-bottom: 30px;
+            font-weight: bold;
+            font-size: 2.5em;
+        }
+        .robot {
+            width: 120px; 
+            height: 220px; 
+            position: relative; 
+            margin: 20px auto; 
+            animation: bounce 1s infinite;
+            display: none; /* Hide robot initially */
+        }
+        .head {
+            width: 120px;
+            height: 120px;
+            background-color: #007bff;
+            border-radius: 50%;
+            position: relative;
+            margin: 0 auto;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+        .eyes {
+            width: 60%;
+            height: 20%;
+            background-color: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 30%;
+            left: 20%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 5%;
+        }
+        .eye {
+            width: 20%;
+            height: 100%;
+            background-color: black;
+            border-radius: 50%;
+        }
+        .body {
+            width: 100px;
+            height: 100px;
+            background-color: #007bff;
+            border-radius: 10px;
+            position: absolute;
+            top: 100%;
+            left: 10%;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+        .arms {
+            width: 100%;
+            position: absolute;
+            top: 40%;
+            left: 0;
+            display: flex;
+            justify-content: space-between;
+        }
+        .arm {
+            width: 20px;
+            height: 70px;
+            background-color: #007bff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+        .legs {
+            width: 100%;
+            position: absolute;
+            top: 200px;
+            left: 0;
+            display: flex;
+            justify-content: space-between;
+        }
+        .leg {
+            width: 30px;
+            height: 70px;
+            background-color: #007bff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+        .question {
+            position: absolute;
+            top: 50%; /* Center vertically */
+            right: 20px; /* Position at the right */
+            transform: translateY(-50%); /* Adjust to center */
+            font-size: 1.2em; /* Smaller size */
+            margin: 20px;
+            padding: 15px;
+            border-left: 5px solid #007bff;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            transition: transform 0.3s;
+            display: none; /* Hide question initially */
+            color: #333; /* Text color */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 1s ease forwards; /* Fade-in animation */
+        }
+        .question.visible {
+            display: block; /* Show question when needed */
+        }
+        .question:hover {
+            transform: scale(1.02);
+        }
+        .answer {
+            font-size: 1.5em;
+            margin-top: 20px;
+            color: #333;
+            padding: 15px;
+            border: 1px solid #007bff;
+            border-radius: 5px;
+            background-color: #f8f9fa;
+            opacity: 0;
+            transition: opacity 0.3s;
+            display: none; /* Hide answer initially */
+        }
+        .answer.visible {
+            display: block; /* Show answer when needed */
+            opacity: 1; /* Fade in effect */
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            padding: 10px 20px;
+            font-size: 1.2em;
+            transition: background-color 0.3s;
+            position: relative; /* Relative positioning */
+            z-index: 10; /* Ensure the button is above other elements */
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 0.9em;
+            color: #666;
+        }
+        .feedback {
+            margin-top: 20px;
+            font-weight: bold;
+            color: #007bff;
+        }
+        #interviewSection {
+            display: none; /* Hide interview section initially */
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>UPSC AI Interview</h1>
+        
+        <!-- Human-like Robot -->
+        <div class="robot" id="robot">
+            <div class="head">
+                <div class="eyes">
+                    <div class="eye"></div>
+                    <div class="eye"></div>
+                </div>
+            </div>
+            <div class="body"></div>
+            <div class="arms">
+                <div class="arm"></div>
+                <div class="arm"></div>
+            </div>
+            <div class="legs">
+                <div class="leg"></div>
+                <div class="leg"></div>
+            </div>
+        </div>
+
+        <button class="btn btn-primary" id="startButton" onclick="startInterview()">
+            Start Interview
+        </button>
+        
+        <div id="interviewSection">
+            <div class="question" id="question">Loading question...</div>
+            <button class="btn btn-primary" onclick="startRecognition()" id="answerButton">
+                <i class="fas fa-microphone"></i> Answer
+            </button>
+            <div class="answer" id="answer"></div>
+            <div class="feedback" id="feedback"></div>
+        </div>
+    </div>
+    <footer>
+        <p>Powered by AI | &copy; 2024</p>
+    </footer>
+
+    <script>
+        const questions = [
+            {
+                question: "What are the main challenges facing India today?",
+                keywords: ["poverty", "education", "corruption", "healthcare", "environment"]
+            },
+            {
+                question: "Discuss the importance of the Constitution.",
+                keywords: ["rights", "justice", "equality", "fraternity", "democracy"]
+            },
+            {
+                question: "What is the significance of the Green Revolution?",
+                keywords: ["agriculture", "food security", "technology", "production"]
+            },
+            {
+                question: "Explain the role of the Election Commission in India.",
+                keywords: ["free and fair elections", "independence", "voter turnout"]
+            },
+            {
+                question: "How does globalization affect India?",
+                keywords: ["economy", "culture", "trade", "technology"]
+            }
+            // Add more questions and keywords as needed
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+
+        function startInterview() {
+            document.getElementById('robot').style.display = 'block'; // Show robot
+            document.getElementById('startButton').style.display = 'none'; // Hide Start Interview button
+            document.getElementById('interviewSection').style.display = 'block'; // Show interview section
+            askQuestion(); // Start asking questions
+        }
+
+        function askQuestion() {
+            if (currentQuestion < questions.length) {
+                const questionText = questions[currentQuestion].question;
+                const questionElement = document.getElementById('question');
+                questionElement.textContent = questionText;
+                questionElement.classList.add('visible'); // Show question
+
+                // Speak the question
+                speak(questionText);
+            } else {
+                document.getElementById('feedback').textContent = `Your total score is: ${score}`;
+            }
+        }
+
+        function startRecognition() {
+            const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+            recognition.onresult = (event) => {
+                const answer = event.results[0][0].transcript;
+                document.getElementById('answer').textContent = answer;
+                document.getElementById('answer').classList.add('visible'); // Show answer
+                evaluateAnswer(answer);
+            };
+            recognition.start();
+        }
+
+        function evaluateAnswer(answer) {
+    let foundKeywords = 0;
+    questions[currentQuestion].keywords.forEach((keyword) => {
+        if (answer.toLowerCase().includes(keyword.toLowerCase())) {
+            foundKeywords++;
+        }
+    });
+
+    // Update score based on keywords found
+    score += foundKeywords; // Add points for this answer
+    document.getElementById('feedback').textContent = `You scored ${foundKeywords} points for this answer.`;
+    
+    // Provide feedback on the maximum score possible for that question
+    const maxScore = questions[currentQuestion].keywords.length;
+    document.getElementById('feedback').textContent += ` (Max: ${maxScore})`;
+    
+    // Move to the next question after a short delay
+    currentQuestion++;
+    setTimeout(() => {
+        document.getElementById('question').classList.remove('visible'); // Hide question
+        setTimeout(askQuestion, 1000); // Wait before asking the next question
+    }, 2000); // Delay before showing feedback
+}
+
+
+        function speak(text) {
+            const utterance = new SpeechSynthesisUtterance(text);
+            speechSynthesis.speak(utterance);
+        }
+    </script>
+</body>
+</html>
